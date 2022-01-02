@@ -1,4 +1,4 @@
-require_relative '../lib/lib.rb'
+require_relative '../lib/board.rb'
 
 describe Board do
   context 'when creating an empty 6x7 board' do
@@ -45,7 +45,7 @@ describe Board do
       [0,0],
       [1],
       []
-    ])}
+    ], 6)}
 
     it 'has no winner' do
       expect(subject.winner).to eql(nil)
@@ -53,15 +53,15 @@ describe Board do
   end
 
   context 'when creating an almost full board from columns' do
-    subject{described_class.new([[0,1,0,1,0]]*7)}
+    subject{described_class.new([[0,1,0,1,0]]*7,6)}
 
     it 'does allow placement once in a column' do
-      expect(subject.place(1,3)).not_to eql(nil)
+      expect(subject.is_allowed?(3)).to eql(true)
     end
 
     it 'does not allow placement twice in a column' do
       subject.place(1,3)
-      expect(subject.place(1,3)).to eql(nil)
+      expect(subject.is_allowed?(3)).to eql(false)
     end
   end
 
@@ -75,7 +75,7 @@ describe Board do
         [0,1,0],
         [1,1],
         []
-      ])
+      ],6)
       expect(board.winner).to eql(nil)
     end
 
@@ -88,7 +88,7 @@ describe Board do
         [0,1,0,1,1],
         [1,1,1,0],
         []
-      ])
+      ],6)
       expect(board.winner).to eql(nil)
     end
 
@@ -101,7 +101,7 @@ describe Board do
         [0,1,0,1,1],
         [1,1,1,0],
         [1,0]
-      ])
+      ],6)
       expect(board.winner).to eql(nil)
     end
   end
@@ -117,7 +117,7 @@ describe Board do
         [0,1,0,1,1],
         [1,1,1,0],
         [1,0]
-      ])
+      ],6)
       expect(board.winner).to eql(1)
     end
 
@@ -131,7 +131,7 @@ describe Board do
         [1,1,1,0],
         [],
         []
-      ])
+      ],6)
       expect(board.winner).to eql(0)
     end
 
@@ -145,7 +145,7 @@ describe Board do
         [0,0,0],
         [],
         []
-      ])
+      ],6)
       expect(board.winner).to eql(1)
     end
   end
